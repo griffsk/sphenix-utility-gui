@@ -10,7 +10,8 @@ def xmlCalParse(xmlFileName):
 		#get eta phi name for each bin, all parameters under tag dparams, all names are type string
 		bins = []
 		for i in root.findall('XmlKey/Object/PdbParameterMap/dparams/string'):
-			name = i.get('v')
+			temp = i.get('v')
+			name = temp.replace('calib_const_', '')
 			bins.append(name)
 
 		#get constant for each bin, all parameters under tag dparams, all conts are type Double_t
@@ -33,8 +34,8 @@ def xmlADCwrite(binNamesList, ADClist, outDir):
 	
 	#write the bin names and values alternating, bin name first, value on next line
 	for i in range(len(binNamesList)):
-		outFile.write('    <string v=\"' + str(binNamesList[i]) + '\"/>\n')
-		outFile.write('    <Double_t v=\"' + str(ADClist[i]) + '\"/>\n')
+		outFile.write('    <string>ZS_ADC_' + str(binNamesList[i]) + '</string>\n')
+		outFile.write('    <Double_t>' + str(ADClist[i]) + '</Double_t>\n')
 	
 	#finish formatting and close xml	
 	outFile.write('  </ADCzsVals>\n')
@@ -49,7 +50,7 @@ def xmlGeVwrite(binNamesList, GeVlist, outDir):
 	
 	#write the bin names and values alternating, bin name first, value on next line
 	for i in range(len(binNamesList)):
-		outFile.write('    <string v=\"' + str(binNamesList[i]) + '\"/>\n')
+		outFile.write('    <string v=\"ZS_GeV_' + str(binNamesList[i]) + '\"/>\n')
 		outFile.write('    <Double_t v=\"' + str(GeVlist[i]) + '\"/>\n')
 	
 	#finish formatting and close xml	
